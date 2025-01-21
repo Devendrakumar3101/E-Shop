@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock title %}
+
+{% block content %}
+<div class="container col-lg-3 mx-auto mt-5 border rounded">
+    <h1 class="mx-auto">Login</h1>
+    <div class="form-group">
+        {% if error_msg %}
+        <div class="alert alert-danger" role="alert">
+          <h4 class="alert-heading">{{error_msg}}</h4>
+        </div>
+        {% endif %}
+        <form action="" method="post">
+          {% csrf_token %}
+  
+          <label for="username">Username</label>
+          <input type="text" name="username" id="username" class="form-control" placeholder="Devendra3101" required>
+
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" class="form-control" placeholder="********" required>
+
+          <input type="submit" value="Login" class="btn btn-info form-control my-5">
+        </form>
+    </div>
+</div>
+{% endblock content %}
+
+
+
+{% comment %} password -- Devend@1 {% endcomment %}
