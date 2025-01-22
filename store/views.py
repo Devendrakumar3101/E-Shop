@@ -5,6 +5,7 @@ from .models.product import Product
 from .models.category import Category
 from .models.customer import Customer
 from .models.checkout import Checkout
+from .models.profile import Profile
 
 # Create your views here.
 def index(request):
@@ -12,7 +13,6 @@ def index(request):
 
     if request.method == 'GET':
 
-        # request.session.flush()
         products = None
         categories = Category.get_all_category()
 
@@ -20,8 +20,12 @@ def index(request):
 
         categoryID = request.GET.get('category_id')
 
+        
+
         if categoryID:
             products = Product.get_all_products_by_category_id(categoryID)
+        elif request.GET.get('search'):
+            products = Product.objects.filter(name__icontains = request.GET.get('search'))
         else:
             products = Product.get_all_products()
         
@@ -163,6 +167,15 @@ def loginPage(request):
             error_msg = "username or password is wrong!!"
             return render(request, 'login.html', {'error_msg':error_msg})
 
+
+def ProfilePage(request):
+    logged_customer_id = request.session.get('customer')
+    # print(logged_customer_id)
+
+    profile_objs = Profile.objects.get(customer__id = logged_customer_id)
+    # profile_objs = Profile.objects.all()
+
+    return render(request, 'profile.html', {'logged_customer_id':logged_customer_id, 'profile_objs':profile_objs})
         
 def logoutPage(request):
     request.session.clear()
@@ -192,7 +205,7 @@ def cartPage(request):
 def removeCartProduct(request, product_id):
     # print(request.session.get('cart'))
     my_cart = request.session.get('cart')
-    print(my_cart)
+    # print(my_cart)
     my_cart.pop(product_id)
 
     request.session['cart'] = my_cart # to update cart

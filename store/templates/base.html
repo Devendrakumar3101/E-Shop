@@ -1,3 +1,5 @@
+{% load custom_filter %}
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -20,7 +22,7 @@
                 <a class="nav-link active" aria-current="page" href="/">Store</a>
               </li>
             </ul>
-            <form class="d-flex" role="search">
+            <form method="get" class="d-flex" role="search">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="/cart">Cart<span class="py-1 px-2 rounded" style="background-color: cyan;"><b>{{request.session.cart.keys|length}}</b></span>
@@ -31,12 +33,12 @@
               
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="/order">Order</a>
+                  <a class="nav-link" aria-current="page" href="/order">Order</a>
                 </li>
               </ul>
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="/logout">Logout</a>
+                  <a class="nav-link" aria-current="page" href="/profile">{{request.session.customer | get_logged_customer}}</a>
                 </li>
               </ul>
               
@@ -54,7 +56,7 @@
                 </ul>
               {% endif %}
                 
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
           </div>

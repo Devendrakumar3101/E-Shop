@@ -3,6 +3,7 @@ from .models.product import Product
 from .models.category import Category
 from .models.customer import Customer
 from .models.checkout import Checkout
+from .models.profile import Profile
 
 # Register your models here.
 
@@ -19,6 +20,7 @@ class CustomerAdmin(admin.ModelAdmin):
 admin.site.register(Customer, CustomerAdmin)
 
 admin.site.register(Checkout)
+admin.site.register(Profile)
 
 
 
