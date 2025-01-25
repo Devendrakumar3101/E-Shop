@@ -6,6 +6,9 @@ from .models.category import Category
 from .models.customer import Customer
 from .models.checkout import Checkout
 from .models.profile import Profile
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib import messages
 
 # Create your views here.
 def index(request):
@@ -171,9 +174,14 @@ def loginPage(request):
 def ProfilePage(request):
     logged_customer_id = request.session.get('customer')
     # print(logged_customer_id)
+    try:
+        profile_objs = Profile.objects.get(customer__id = logged_customer_id)
+        # profile_objs = Profile.objects.all()
+    except:
+        profile_objs = None
+        # messages.info(request, 'Please create profile on admin panel then try again.')
+        messages.info(request, 'Please update your profile.')
 
-    profile_objs = Profile.objects.get(customer__id = logged_customer_id)
-    # profile_objs = Profile.objects.all()
 
     return render(request, 'profile.html', {'logged_customer_id':logged_customer_id, 'profile_objs':profile_objs})
         
@@ -216,14 +224,14 @@ def CheckoutPage(request):
     if request.method == 'POST':
         address = request.POST.get('address')
         phone = request.POST.get('phone')
-        customer = request.session.get('customer')
+        customer_id = request.session.get('customer')
         cart = request.session.get('cart')
         products = Product.get_product_by_id(list(cart.keys()))
 
-        print(address, phone, customer, cart, products)
+        # print(address, phone, customer, cart, products)
         
         for product in products:
-            order = Checkout.objects.create(customer = Customer(id=customer),
+            order = Checkout.objects.create(customer = Customer(id=customer_id),
                                             product = product,
                                             quantity = cart.get(str(product.id)),
                                             price = product.price,
@@ -231,7 +239,51 @@ def CheckoutPage(request):
                                             phone = phone)
         request.session['cart'] = {}
 
+        # sent_email_to_customer
+        sent_email_to_customer(request, address, phone, customer_id, cart, products)
+
     return redirect('order')
+
+def sent_email_to_customer(request, address, phone, customer_id, cart, products):
+    # print(phone)
+
+    customer = Customer.objects.get(id = customer_id)
+    # print(customer.email)
+
+    email_message = f"""
+Dear {customer.firstname} {customer.lastname},
+
+Thank you for your order! We are pleased to confirm that your order #[Order Number] has been successfully processed.
+
+Order Details:
+
+Item(s): [List of items]
+Quantity: [Quantity]
+Total Amount: [Total Price]
+Shipping Address: {address}
+Estimated Delivery Date: within 7 days
+You will receive another email once your order has shipped, along with tracking information.
+
+If you have any questions or need further assistance, please feel free to reach out to our customer service team at +91 9876543210 or eshopsevices@gmail.com.
+
+Thank you for choosing us!
+
+Best regards,
+
+E-Shop
+Phone : +91 9876543210
+Email : eshopsevices@gmail.com"""
+
+    try:
+        send_mail(
+            subject="Your Order Confirmation",
+            message=email_message,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[f'{customer.email}'],
+            fail_silently=False,
+        )
+    except Exception as e:
+        print(e)
 
 def OrderPage(request):
     if request.method == 'GET':
@@ -245,4 +297,10 @@ def OrderPage(request):
             'all_order': all_order,
         }
         return render(request, 'order.html', params)
+
+def About(request):
+    return render(request, 'about.html')
+
+def Contact(request):
+    return render(request, 'contact.html')
 

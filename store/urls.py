@@ -13,4 +13,6 @@ urlpatterns = [
     path('cart/remove/<product_id>/', views.removeCartProduct, name='removeCartProduct'),
     path('checkout/', auth_middleware(views.CheckoutPage), name='checkout'),
     path('order/', auth_middleware(views.OrderPage), name='order'),
+    path('about/', views.About, name='about'),
+    path('contact/', views.Contact, name='contact'),
 ]

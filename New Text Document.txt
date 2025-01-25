@@ -1,0 +1,1 @@
+create a contact model to save contact details of customer.

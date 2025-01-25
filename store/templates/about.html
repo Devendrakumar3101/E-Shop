@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}About{% endblock title %}
+
+{% block style %}
+main {
+    padding: 20px;
+}
+
+.about-section, .mission-section, .team-section {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #333;
+}
+
+.team-member {
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.team-member h3 {
+    margin: 0;
+}
+
+{% endblock style %}
+
+{% block content %}
+<div class="container">
+    <main>
+        <section class="about-section">
+            <h2>Our Story</h2>
+            <p>Welcome to our e-commerce website! We started our journey in 2020 with a mission to provide high-quality products at affordable prices. Our team is passionate about delivering the best shopping experience to our customers.</p>
+        </section>
+
+        <section class="mission-section">
+            <h2>Our Mission</h2>
+            <p>Our mission is to empower customers by providing a wide range of products that meet their needs. We believe in quality, affordability, and excellent customer service.</p>
+        </section>
+
+        <section class="team-section">
+            <h2>Meet Our Team</h2>
+            <div class="team-member">
+                <h3>John Doe</h3>
+                <p>Founder & CEO</p>
+                <p>John has over 10 years of experience in the e-commerce industry and is passionate about creating a seamless shopping experience.</p>
+            </div>
+            <div class="team-member">
+                <h3>Jane Smith</h3>
+                <p>Marketing Director</p>
+                <p>Jane is responsible for our marketing strategies and ensuring that our customers are always informed about the latest products and offers.</p>
+            </div>
+            <div class="team-member">
+                <h3>Emily Johnson</h3>
+                <p>Customer Service Manager</p>
+                <p>Emily leads our customer service team, ensuring that all customer inquiries are handled promptly and effectively.</p>
+            </div>
+        </section>
+    </main>
+</div>
+{% endblock content %}
